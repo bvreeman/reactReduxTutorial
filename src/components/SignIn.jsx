@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { auth } from '../firebase';
+import * as routes from '../constants/routes';
 class SignIn extends Component {
     constructor(props) {
         super(props);
@@ -14,9 +15,12 @@ class SignIn extends Component {
     }
 
     signIn() {
+        const { history } = this.props;
+        
         console.log(this.state, 'this.state')
         const { email, password } = this.state;
         auth.signInWithEmailAndPassword(email, password)
+            history.push(routes.HOME)
             .catch(error => {
                 this.setState({error})
             })
