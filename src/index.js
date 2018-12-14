@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { auth } from './firebase'
+import { firebase } from './firebase'
 
 import App from './components/App'
 import SignIn from './components/SignIn'
@@ -12,7 +12,7 @@ import HeaderNav from './components/HeaderNav'
 
 import * as routes from './constants/routes';
 
-auth.onAuthStateChanged(user => {
+firebase.auth.onAuthStateChanged(user => {
     if (user) {
         console.log('user has signed in or up', user);
     } else {

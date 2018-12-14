@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { Link, withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { auth } from '../firebase';
 import * as routes from '../constants/routes';
+import { SignUpLink } from './SignUp';
+
 
 const SignIn = ({ history }) =>
     <div>
         <h1>Sign In</h1>
         <SignInForm history = {history} />
+        <SignUpLink />
     </div>
 
 const INITIAL_STATE = {
@@ -42,7 +45,7 @@ class SignInForm extends Component {
         auth.signInWithEmailAndPassword(email, password)
             .then(() => {
                 this.setState({ ...INITIAL_STATE });
-                history.push(routes.APP)
+                history.push(routes.HOME)
             })
             .catch(error => {
                 this.setState(byPropKey('error', error));
@@ -89,7 +92,6 @@ class SignInForm extends Component {
                 </button>
 
                 { error && <p>{error.message}</p> }
-                <div><Link to={'/signup'}>Sign up instead</Link></div>
             </form>
         )
     }

@@ -1,61 +1,133 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+import * as routes from '../constants/routes';
 
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
 
-class SignUp extends Component {
+const SignUp = ({ history }) =>
+    <div>
+        <h1>Sign Up</h1>
+        <SignUpForm history={ history } />
+    </div>
+
+const INITIAL_STATE = {
+    username: '',
+    email: '',
+    passwordOne: '',
+    passwordTwo: '',
+    error: null,
+  };
+
+  const byPropKey = (propertyName, value) => () => ({
+    [propertyName]: value,
+  });
+class SignUpForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            email: '',
-            password: '',
-            error: {
-                message: ''
-            }
-        }
+
+        this.state = { ...INITIAL_STATE };
     }
 
-    signUp() {
-        console.log(this.state, 'this.state')
-        const { email, password } = this.state;
-        auth.createUserWithEmailAndPassword(email, password)
-            .catch(error => {
-                this.setState({error})
+    handleSignIn = () => {
+    window.location.assign('/app');
+    }
+
+    onSubmit = (event) => {
+    const {
+        username,
+        email,
+        passwordOne,
+        } = this.state;
+
+        const { history } = this.props;
+    
+        auth.doCreateUserWithEmailAndPassword(email, passwordOne)
+        .then(authUser => {
+            // Create a user in your own accessible Firebase Database too
+            db.doCreateUser(authUser.user.uid, username, email)
+            .then(() => {
+            this.setState({ ...INITIAL_STATE });
+            history.push(routes.HOME);
             })
+            .catch(error => {
+            this.setState(byPropKey('error', error));
+            });
+        })
+        .catch(error => {
+            this.setState(byPropKey('error', error));
+        })
+        .then (() => {
+            this.handleSignIn();
+        });
+    
+        event.preventDefault();
     }
+
     render () {
-        return(
-            <div className='form-inline'>
-                <h2>Sign Up</h2>
-                <div className='form-group' style={{margin: '20px'}}>
-                    <input 
-                        type="text"
-                        style={{marginRight: '5px'}}
-                        className='form-control'
-                        placeholder='Email'
-                        onChange={event => this.setState({email: event.target.value})}
-                    />
-                    <input 
-                        type="password"
-                        style={{marginRight: '5px'}}
-                        className='form-control'
-                        placeholder='Password'
-                        onChange={event => this.setState({password: event.target.value})}
-
-                    />
-                    <button 
-                        className='btn btn-primary'
-                        type='button'
-                        onClick={() => this.signUp()}
-                    >
-                        Sign Up
-                    </button>
-                </div>
-                <div>{this.state.error.message}</div>
-                <div><Link to={'/signin'}>Already a user? Sign in instead</Link></div>
-            </div>
-        )
-    }
-}
-
-export default SignUp;
+        const {
+            username,
+            email,
+            passwordOne,
+            passwordTwo,
+            error,
+          } = this.state;
+      
+          const isInvalid =
+          passwordOne !== passwordTwo ||
+          passwordOne === '' ||
+          email === '' ||
+          username === '';
+      
+          return (
+            <form onSubmit={this.onSubmit}>
+              <input
+                className='signUpInput'
+                value={username}
+                onChange={event => this.setState(byPropKey('username', event.target.value))}
+                type="text"
+                placeholder="Full Name"
+              />
+              <input
+                className='signUpInput'
+                value={email}
+                onChange={event => this.setState(byPropKey('email', event.target.value))}
+                type="text"
+                placeholder="Email Address"
+              />
+              <input
+                className='signUpInput'
+                value={passwordOne}
+                onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
+                type="password"
+                placeholder="Password"
+              />
+              <input
+                className='signUpInput'
+                value={passwordTwo}
+                onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
+                type="password"
+                placeholder="Confirm Password"
+              />
+              <button disabled={isInvalid} type="submit" className='signUpSubmit'>
+                Sign Up
+              </button>
+      
+              { error && <p>{error.message}</p> }
+            </form>
+          );
+        }
+      }
+      
+      const SignUpLink = () =>
+        <p>
+          Don't have an account?
+          {' '}
+          <Link to={routes.SIGN_UP}>Sign Up</Link>
+        </p>
+      
+      export default withRouter(SignUp);
+      
+      export {
+        SignUpForm,
+        SignUpLink,
+      };
