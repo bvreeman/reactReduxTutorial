@@ -5,7 +5,7 @@ import withAuthorization from './FirebaseWithAuthorization';
 const App = () =>
     <AuthUserContext.Consumer>
     {authUser =>
-        <div>App</div>
+      <h1>Account: {authUser.email}</h1>
     }
     </AuthUserContext.Consumer>
 
