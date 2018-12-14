@@ -20,7 +20,9 @@ class SignIn extends Component {
         console.log(this.state, 'this.state')
         const { email, password } = this.state;
         auth.signInWithEmailAndPassword(email, password)
-            history.push(routes.HOME)
+            .then(
+                history.push(routes.APP)
+            )
             .catch(error => {
                 this.setState({error})
             })

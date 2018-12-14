@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import AuthUserContext from './FirebaseAuthUserContext';
+import withAuthorization from './FirebaseWithAuthorization';
 
-class App extends Component {
-    render () {
-        return(
-            <div>App</div>
-        )
+const App = () =>
+    <AuthUserContext.Consumer>
+    {authUser =>
+        <div>App</div>
     }
-}
+    </AuthUserContext.Consumer>
 
-export default App;
+const authCondition = (authUser) => !!authUser;
+
+export default withAuthorization(authCondition)(App);

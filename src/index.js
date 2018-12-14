@@ -33,8 +33,8 @@ ReactDom.render(
                 <Route exact path={routes.HOME} component={() => <Home />} />
                 <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
                 <Route exact path={routes.SIGN_UP} component={() => <SignUp />} />
+                <Route exact path={routes.APP} component={() => <App />} />
                 {/* <Route exact path={routes.PASSWORD_FORGET} component={() => <FirebasePasswordForgetPage />} /> */}
-                {/* <Route exact path={routes.ACCOUNT} component={() => <FirebaseAccount />} /> */}
             </Switch>
         </div>
     </Router>, document.getElementById('root')
