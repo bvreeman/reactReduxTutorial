@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom'
 import { auth } from '../firebase';
 import * as routes from '../constants/routes';
@@ -8,21 +8,21 @@ import { SignUpLink } from './SignUp';
 const SignIn = ({ history }) =>
     <div>
         <h1>Sign In</h1>
-        <SignInForm history = {history} />
+        <SignInForm history = { history } />
         <SignUpLink />
     </div>
-
-const INITIAL_STATE = {
-    email: '',
-    password: '',
-    error: null,
-  };
 
   const byPropKey = (propertyName, value) => () => ({
     [propertyName]: value,
   });
 
-class SignInForm extends Component {
+  const INITIAL_STATE = {
+      email: '',
+      password: '',
+      error: null,
+    };
+
+class SignInForm extends PureComponent {
     constructor(props) {
         super(props);
         
@@ -42,7 +42,7 @@ class SignInForm extends Component {
 
         const { history } = this.props;
         
-        auth.signInWithEmailAndPassword(email, password)
+        auth.doSignInWithEmailAndPassword(email, password)
             .then(() => {
                 this.setState({ ...INITIAL_STATE });
                 history.push(routes.HOME)
