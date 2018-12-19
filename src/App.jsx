@@ -6,7 +6,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
 import { logUser } from './actions'
-import App from './components/App'
+import Account from './components/Account'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Home from './components/Home'
@@ -27,7 +27,7 @@ firebase.auth.onAuthStateChanged(user => {
     }
 })
 
-class Application extends Component {
+class App extends Component {
     render() {
         return (
             <Provider store={store}>
@@ -36,14 +36,14 @@ class Application extends Component {
                         <HeaderNav />
                         <Switch>
                             <Route exact path='/' component={Home} />
-                            <Route path='/app' component={App} />
+                            <Route path='/account' component={Account} />
                             <Route path='/signin' component={SignIn} />
                             <Route path='/signup' component={SignUp} />
                         
                             <Route exact path={routes.HOME} component={() => <Home />} />
                             <Route exact path={routes.SIGN_IN} component={() => <SignIn />} />
                             <Route exact path={routes.SIGN_UP} component={() => <SignUp />} />
-                            <Route exact path={routes.APP} component={() => <App />} />
+                            <Route exact path={routes.ACCOUNT} component={() => <Account />} />
                             {/* <Route exact path={routes.PASSWORD_FORGET} component={() => <FirebasePasswordForgetPage />} /> */}
                         </Switch>
                     </div>
@@ -53,4 +53,4 @@ class Application extends Component {
     }
 }
 
-export default FirebaseWithAuthentication(Application);
+export default FirebaseWithAuthentication(App);

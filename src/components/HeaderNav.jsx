@@ -19,13 +19,12 @@ const NavigationAuth = () =>
         <nav className="navbar">
             <div className="navbar-header">
                 <div className="col-md-12 col-xs-12 navbarCenter">
-                    <Link to="/Home" className="navbar-brand">Home</Link>
-                    <Link to='/App' className="navbar-brand">App</Link>
+                    <Link to="/home" className="navbar-brand">Home</Link>
+                    <Link to='/account' className="navbar-brand">Account</Link>
                     <SignOut className='navbarRight' />
                 </div>
             </div>
         </nav>
-        <div><p>auth</p></div>
     </div>
 
 const NavigationNonAuth = () =>

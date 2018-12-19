@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
 import AuthUserContext from './FirebaseAuthUserContext';
 import withAuthorization from './FirebaseWithAuthorization';
 
-const AppAuth = () =>
+const AccountAuth = () =>
   <AuthUserContext.Consumer>
   {authUser =>
     <h1>Account: {authUser.email}</h1>
   }
   </AuthUserContext.Consumer>
 
-class App extends Component {
+class Account extends Component {
   render() {
     return (
-      <AppAuth />
+      <AccountAuth />
     )
   }
 }
@@ -24,4 +23,4 @@ function mapStateToProps(state) {
 
 const authCondition = (authUser) => !!authUser;
 
-export default withAuthorization(authCondition)(App);
+export default withAuthorization(authCondition)(Account);
